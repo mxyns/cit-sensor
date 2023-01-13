@@ -20,6 +20,8 @@ def main():
     mqtt_config = config["mqtt"]
     camera_config = config["camera"]
 
+    print(config)
+
     with mqtt.MqttClient(config=mqtt_config) as client:
         with sensor.Camera() as camera:
             while True:

@@ -26,13 +26,13 @@ def main():
         with sensor.Camera() as camera:
             while True:
                 loop_start = time.time()
-                image = camera.still_capture_sync(resize=(640, 360), save=camera_config["tmp_save_path"])
+                image = camera.still_capture_sync(resize=(camera_config["length"], camera_config["width"]), save=camera_config["tmp_save_path"])
 
                 buffered = BytesIO()
                 image.save(buffered, format="JPEG")
                 img_b64 = base64.b64encode(buffered.getvalue())
 
-                client.publish(camera_config["topic"], img_b64.decode("ascii"))
+                client.publish(camera_config["topic"], img_b64.decode("ascii"), camera_config["qos"])
 
                 loop_duration = time.time() - loop_start
                 need_to_sleep = camera_config["frequency"] - loop_duration

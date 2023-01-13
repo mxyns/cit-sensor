@@ -3,7 +3,11 @@
   "camera": {
     "topic": "sensor/ir/%id",
     "tmp_save_path": "/tmp/camera_tmp.jpg",
-    "frequency": 10.0
+    "frequency": 10.0,
+    "qos": 1,
+    "length":640,
+    "width":360
+    
   },
   "mqtt": {
     "broker_hostname": "26630c3dc9f043aea09a7154577a5bba.s2.eu.hivemq.cloud",

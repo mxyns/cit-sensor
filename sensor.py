@@ -1,10 +1,26 @@
 #!/usr/bin/env python
 from io import BytesIO
 
-from picamera import PiCamera
 from time import sleep
 from PIL import Image
 import numpy as np
+
+# To test program locally without RPI or PiCamera
+# comment the next line
+from picamera import PiCamera
+
+
+# rename DummyPiCamera to PiCamera
+class DummyPiCamera:
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+
+    def still_capture_sync(self, resize: tuple[int, int], warmup_time: float = 0.0, save: str = None):
+        return Image.fromarray(np.zeros(resize))
 
 
 class Camera:

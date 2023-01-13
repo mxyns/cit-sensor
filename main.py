@@ -13,7 +13,8 @@ def main():
         prog='SensorCIT',
         description='Capture images from a PiCamera and publish it to a MQTT Broker',
         epilog='Hi DevOps Team!')
-    parser.add_argument('-c', '--config', default="config.json", help="Path to the configuration file")
+    parser.add_argument('-c', '--config', default="config.json",
+                        help="Path to the configuration file")
     args = parser.parse_args()
 
     config = config_helper.load_app_config(args.config)
@@ -26,19 +27,23 @@ def main():
         with sensor.Camera() as camera:
             while True:
                 loop_start = time.time()
-                image = camera.still_capture_sync(resize=(camera_config["length"], camera_config["width"]), save=camera_config["tmp_save_path"])
+                image = camera.still_capture_sync(resize=(
+                    camera_config["length"], camera_config["width"]), save=camera_config["tmp_save_path"])
 
                 buffered = BytesIO()
-                image.save(buffered, format="JPEG")
+                image = image.convert(camera_config["image_mode"])
+                image.save(buffered, format=camera_config["image_format"])
                 img_b64 = base64.b64encode(buffered.getvalue())
 
-                client.publish(camera_config["topic"], img_b64.decode("ascii"), camera_config["qos"])
+                client.publish(camera_config["topic"], img_b64.decode(
+                    "ascii"), camera_config["qos"])
 
                 loop_duration = time.time() - loop_start
                 need_to_sleep = camera_config["frequency"] - loop_duration
                 time.sleep(max(0, need_to_sleep))
                 if need_to_sleep <= 0:
-                    print(f"Warning, capture is taking too long to match the configured frequency of {camera_config['frequency']}s")
+                    print(
+                        f"Warning, capture is taking too long to match the configured frequency of {camera_config['frequency']}s")
 
 
 if __name__ == '__main__':

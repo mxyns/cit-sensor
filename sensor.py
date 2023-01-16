@@ -57,7 +57,7 @@ class Camera:
             sleep(warmup_time)
             backend.stop_preview()
 
-        backend.capture(stream, resize=resize, format=format)
+        backend.capture(stream, resize=resize, format=format.lower())
 
         stream.seek(0)
         image = Image.open(stream)

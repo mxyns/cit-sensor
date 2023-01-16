@@ -18,8 +18,14 @@ class DummyPiCamera:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         pass
+    
+    def start_preview(self):
+        pass
+    
+    def stop_preview(self):
+        pass
 
-    def still_capture_sync(self, resize: tuple[int, int], warmup_time: float = 0.0, save: str = None):
+    def still_capture_sync(self, resize, warmup_time: float = 0.0, save: str = None):
         return Image.fromarray(np.zeros(resize))
 
 
@@ -29,7 +35,8 @@ class Camera:
         self._pi = None
 
     def __enter__(self):
-        return self.get_backend()
+        self.get_backend()
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.get_backend().__exit__(exc_type, exc_val, exc_tb)
@@ -40,7 +47,7 @@ class Camera:
 
         return self._pi
 
-    def still_capture_sync(self, resize: tuple[int, int], warmup_time: float = 0.0, save: str = None):
+    def still_capture_sync(self, resize, format: str, warmup_time: float = 0.0, save: str = None):
         backend = self.get_backend()
 
         stream = BytesIO()
@@ -50,7 +57,7 @@ class Camera:
             sleep(warmup_time)
             backend.stop_preview()
 
-        backend.capture(stream, resize=resize)
+        backend.capture(stream, resize=resize, format=format)
 
         stream.seek(0)
         image = Image.open(stream)

@@ -62,7 +62,7 @@ class Camera:
         stream.seek(0)
         image = Image.open(stream)
 
-        if save is not None:
+        if save is not None and save != "":
             image.save(save)
 
         return image

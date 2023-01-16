@@ -28,7 +28,7 @@ def main():
             while True:
                 loop_start = time.time()
                 image = camera.still_capture_sync(resize=(
-                    camera_config["length"], camera_config["width"]), save=camera_config["tmp_save_path"])
+                    camera_config["length"], camera_config["width"]), format=camera_config["image_format"], save=camera_config["tmp_save_path"])
 
                 buffered = BytesIO()
                 image = image.convert(camera_config["image_mode"])

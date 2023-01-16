@@ -15,7 +15,7 @@ app_config_template = {
         "length": 640,
         "width": 360,
         "format": "JPEG",
-        "image_mode": "RGB"
+        "mode": "RGB"
     },
     "mqtt": {
         "broker_hostname": "26630c3dc9f043aea09a7154577a5bba.s2.eu.hivemq.cloud",
